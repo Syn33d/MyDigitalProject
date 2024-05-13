@@ -1,8 +1,8 @@
-import { Magazine } from "src/magazine/entities/magazine.entity";
-import { Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Magazine } from "../../magazine/entities/magazine.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity()
 export class Article {
-
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -18,6 +18,6 @@ export class Article {
     @Column()
     isBlocked: boolean;
 
-    @ManyToOne(() => Magazine, magazine => magazine.articles)
-    magazines: Magazine;
+    @ManyToOne(() => Magazine, magazine => magazine.article)
+    magazine: Magazine;
 }

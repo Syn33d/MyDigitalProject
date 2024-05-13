@@ -56,7 +56,7 @@ export class UserService {
     return userDtos;
   }
 
-  async findOneById(@Param('id') id: string): Promise<any | null> {
+  async findOneById(@Param('id') id: number): Promise<any | null> {
     let rows: any[] = await this.data.query("SELECT * FROM user WHERE id = ?", [+id]);
     return rows.length == 1 ? rows[0] : null
   }
@@ -78,7 +78,7 @@ export class UserService {
   }
 
   async update(@Param('id') id: string, @Body() json) {
-    let find = await this.findOneById(id);
+    let find = await this.findOneById(+id);
     json.id = +id;
     json.lastName ||= find.lastName;
     json.firstName ||= find.firstName;

@@ -10,9 +10,9 @@
         @Column()
         dateCollaboration: Date;
 
-        @ManyToOne(() => Magazine, magazine => magazine.collaborationsMagazines)
-        magazines: Magazine;
+        @ManyToOne(() => Magazine, magazine => magazine.collaborationsMagazine)
+        magazine: Magazine;
 
-        @ManyToOne(() => Artist, artist => artist.collaborationsMagazines)
-        artists: Artist;
+        @ManyToOne(() => Artist, artist => artist.collaborationsMagazine)
+        artist: Artist;
     }

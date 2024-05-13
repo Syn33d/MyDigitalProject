@@ -28,9 +28,9 @@ export class Artist {
     @Column()
     password: string;
 
-    @OneToMany(() => CollaborationMagazine, collaborationMagazine => collaborationMagazine.artists)
-    collaborationsMagazines: CollaborationMagazine[];
+    @OneToMany(() => CollaborationMagazine, collaborationMagazine => collaborationMagazine.artist)
+    collaborationsMagazine: CollaborationMagazine[];
     
-    @ManyToMany(() => Artwork, artwork => artwork.artists)
-    artworks: Artwork[];
+    @ManyToMany(() => Artwork, artwork => artwork.artist)
+    artwork: Artwork[];
 }

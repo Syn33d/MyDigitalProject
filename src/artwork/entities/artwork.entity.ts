@@ -13,6 +13,6 @@ export class Artwork {
     @Column()
     content: string;
 
-    @ManyToMany(() => Artist, artist => artist.artworks)
-    artists: Artist[];
+    @ManyToMany(() => Artist, artist => artist.artwork)
+    artist: Artist[];
 }

@@ -16,9 +16,9 @@ export class Subscription {
     @Column()
     description: string;
 
-    @OneToMany(() => Invoice, invoice => invoice.subscriptions)
-    invoices: Invoice[];
+    @OneToMany(() => Invoice, invoice => invoice.subscription)
+    invoice: Invoice[];
 
-    @ManyToMany(() => Magazine, magazine => magazine.subscriptions)
-    magazines: Magazine[];
+    @ManyToMany(() => Magazine, magazine => magazine.subscription)
+    magazine: Magazine[];
 }

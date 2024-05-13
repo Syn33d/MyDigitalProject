@@ -27,10 +27,10 @@ export class MagazineService {
       throw new NotFoundException();
     }
     // Sort articles so that free articles come first
-    magazine.articles.sort((a, b) => a.isFree === b.isFree ? 0 : a.isFree ? -1 : 1);
+    magazine.article.sort((a, b) => a.isFree === b.isFree ? 0 : a.isFree ? -1 : 1);
     
     // Find the first paid article and mark it as blocked
-    const firstPaidArticle = magazine.articles.find(article => !article.isFree);
+    const firstPaidArticle = magazine.article.find(article => !article.isFree);
     if (firstPaidArticle) {
       firstPaidArticle.isBlocked = true;
     }

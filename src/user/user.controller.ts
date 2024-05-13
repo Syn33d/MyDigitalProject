@@ -27,7 +27,7 @@ export class UserController {
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<any | null> {
-    return this.users.findOneById(id);
+    return this.users.findOneById(+id);
   }
 
   @Roles(Role.Admin, Role.Staff, Role.Spectator)

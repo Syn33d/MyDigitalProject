@@ -39,6 +39,6 @@ export class User {
   @Column({ type: 'timestamp', nullable: true })
   passwordResetExpires: Date;
 
-  @OneToMany(() => Invoice, invoice => invoice.users)
-  invoices: Invoice[];
+  @OneToMany(() => Invoice, invoice => invoice.user)
+  invoice: Invoice[];
 }

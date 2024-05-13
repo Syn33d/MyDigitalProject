@@ -29,9 +29,9 @@ export class Invoice {
     })
     paymentStatus: PaymentStatus;
 
-    @OneToMany(() => User, user => user.invoices)
-    users: User[];
+    @OneToMany(() => User, user => user.invoice)
+    user: User[];
 
-    @OneToMany(() => Subscription, subscription => subscription.invoices)
-    subscriptions: Subscription[];
+    @OneToMany(() => Subscription, subscription => subscription.invoice)
+    subscription: Subscription[];
 }
