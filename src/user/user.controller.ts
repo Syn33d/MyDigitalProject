@@ -16,7 +16,7 @@ export class UserController {
   async create(@Body() json) {
     return this.users.create(json);
   }
-  
+
 
   @UseGuards(RolesGuard)
   @Roles(Role.Admin, Role.Staff)
@@ -25,23 +25,27 @@ export class UserController {
     return this.users.findAll();
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin, Role.Staff, Role.Spectator)
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<any | null> {
-    return this.users.findOneById(+id);
+  async findOne(@Param('id') id: string) {
+    return this.users.findOneById(id);
   }
 
+  @UseGuards(RolesGuard)
   @Roles(Role.Admin, Role.Staff, Role.Spectator)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() json) {
     return this.users.update(id, json);
   }
 
+  @UseGuards(RolesGuard)
   @Roles(Role.Admin, Role.Staff)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.users.remove(id);
   }
-  
+
 
   @Post('reset-password')
   async requestPasswordReset(@Body('email') email: string) {

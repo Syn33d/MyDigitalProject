@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, Index, OneToMany } from 'typeorm';
 import { Role } from '../enums/role.enum';
 import { Invoice } from '../../invoice/entities/invoice.entity';
+import { Status } from '../enums/status.enum';
 
 @Entity()
 export class User {
@@ -32,6 +33,9 @@ export class User {
 
   @Column({ type: "enum", enum: Role, default: Role.Spectator })
   role: Role;
+
+  @Column({ type: "enum", enum: Status, default: status.Verified})
+  status: Status;
 
   @Column({ nullable: true })
   passwordResetToken: string;

@@ -12,23 +12,13 @@ export class UserService {
   constructor(@InjectRepository(User) private data: Repository<User>, private jwtService: JwtService) { }
 
   async create(@Body() json): Promise<any> {
-    json.lastName ||= '';
-    json.firstName ||= '';
-    json.street ||= '';
-    json.town ||= '';
-    json.postalCode ||= '';
     json.email ||= '';
     json.password ||= '';
-  
+
     // Hash the password before inserting it into the database
     const hashedPassword = await bcrypt.hash(json.password, 15);
-  
-    let result = await this.data.query("INSERT INTO user (lastName, firstName, street, town, postalCode, email, password) VALUES (?, ?, ?, ?, ?, ?, ?)", [
-      json.lastName,
-      json.firstName,
-      json.street,
-      json.town,
-      json.postalCode,
+
+    let result = await this.data.query("INSERT INTO user (email, password) VALUES (?, ?)", [
       json.email,
       hashedPassword  // Use the hashed password here
     ]);
@@ -56,7 +46,7 @@ export class UserService {
     return userDtos;
   }
 
-  async findOneById(@Param('id') id: number): Promise<any | null> {
+  async findOneById(@Param('id') id: string): Promise<any | null> {
     let rows: any[] = await this.data.query("SELECT * FROM user WHERE id = ?", [+id]);
     return rows.length == 1 ? rows[0] : null
   }
@@ -108,7 +98,7 @@ export class UserService {
   remove(@Param('id') id: string) {
     return this.data.query("DELETE FROM user WHERE id = ?", [+id]);
   }
-  
+
   async requestPasswordReset(@Body('email') email: string) {
     const user = await this.findOneByEmail(email);
     if (!user) {
