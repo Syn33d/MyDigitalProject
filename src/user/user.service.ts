@@ -18,7 +18,7 @@ export class UserService {
     // Hash the password before inserting it into the database
     const hashedPassword = await bcrypt.hash(json.password, 15);
 
-    let result = await this.data.query("INSERT INTO user (email, password) VALUES (?, ?)", [
+    let result = await this.data.query("INSERT INTO user (email, hash) VALUES (?, ?)", [
       json.email,
       hashedPassword  // Use the hashed password here
     ]);
@@ -47,8 +47,13 @@ export class UserService {
   }
 
   async findOneById(@Param('id') id: string): Promise<any | null> {
-    let rows: any[] = await this.data.query("SELECT * FROM user WHERE id = ?", [+id]);
-    return rows.length == 1 ? rows[0] : null
+    let rows: any[] = await this.data.query("SELECT * FROM user WHERE idUser = ?", [+id]);
+    if (rows.length == 1) {
+      const { hash, ...userDto } = rows[0];
+      return userDto;
+    } else {
+      return null;
+    }
   }
 
   async findOneByEmail(email: string): Promise<User> {
@@ -68,7 +73,7 @@ export class UserService {
   }
 
   async update(@Param('id') id: string, @Body() json) {
-    let find = await this.findOneById(+id);
+    let find = await this.findOneById(id);
     json.id = +id;
     json.lastName ||= find.lastName;
     json.firstName ||= find.firstName;
@@ -77,7 +82,7 @@ export class UserService {
     json.postalCode ||= find.postalCode;
     json.email ||= find.email;
     json.password ||= find.password;
-    await this.data.query("UPDATE user SET lastName = ?, firstName = ?, street = ?, town = ?, postalCode = ?, email = ?, password = ? WHERE id = ?", [
+    await this.data.query("UPDATE user SET lastName = ?, firstName = ?, street = ?, town = ?, postalCode = ?, email = ?, hash = ? WHERE idUser = ?", [
       json.lastName,
       json.firstName,
       json.street,
@@ -96,7 +101,7 @@ export class UserService {
   }
 
   remove(@Param('id') id: string) {
-    return this.data.query("DELETE FROM user WHERE id = ?", [+id]);
+    return this.data.query("DELETE FROM user WHERE idUser = ?", [+id]);
   }
 
   async requestPasswordReset(@Body('email') email: string) {

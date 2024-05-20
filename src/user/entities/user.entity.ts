@@ -34,7 +34,7 @@ export class User {
   @Column({ type: "enum", enum: Role, default: Role.Spectator })
   role: Role;
 
-  @Column({ type: "enum", enum: Status, default: status.Verified})
+  @Column({ type: "enum", enum: Status, default: Status.Verified})
   status: Status;
 
   @Column({ nullable: true })

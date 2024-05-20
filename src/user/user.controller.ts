@@ -8,7 +8,7 @@ import { RolesGuard } from 'src/auth/security/roles.guard';
 
 @Controller('user')
 export class UserController {
-  constructor(@InjectDataSource() private users: UserService, private userService: UserService) { }
+  constructor(private users: UserService) { }
 
   @UseGuards(RolesGuard)
   @Roles(Role.Admin)
