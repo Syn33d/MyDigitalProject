@@ -5,6 +5,11 @@ import { UserService } from 'src/user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt/jwt.strategy';
+import { LoginController } from './login/login.controller';
+import { RegisterController } from './register/register.controller';
+import { LoginStrategy } from './jwt/login.strategy';
+import { PasswordResetController } from './passwordReset/passwordReset.controller';
+import { PasswordResetRequestController } from './passwordReset/passwordResetRequest.controller';
 
 @Module({
   imports: [
@@ -16,7 +21,7 @@ import { JwtStrategy } from './jwt/jwt.strategy';
       }
     })
   ],
-  controllers: [TokenController],
-  providers: [UserService, JwtStrategy]
+  controllers: [TokenController, LoginController, RegisterController, PasswordResetController, PasswordResetRequestController],
+  providers: [UserService, JwtStrategy, LoginStrategy]
 })
 export class AuthModule {}

@@ -12,7 +12,6 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { CollaborationMagazineModule } from './collaborationMagazine/collaborationMagazine.module';
 import { ArticleModule } from './article/article.module';
-import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [

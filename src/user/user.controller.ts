@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, NotFoundException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { InjectDataSource } from '@nestjs/typeorm';
 import { Roles } from 'src/auth/security/roles.decorator';
 import { Role } from './enums/role.enum';
 import { RolesGuard } from 'src/auth/security/roles.guard';
@@ -11,7 +10,7 @@ export class UserController {
   constructor(private users: UserService) { }
 
   @UseGuards(RolesGuard)
-  @Roles(Role.Admin)
+  @Roles(Role.Admin, Role.Spectator)
   @Post()
   async create(@Body() json) {
     return this.users.create(json);
@@ -44,16 +43,5 @@ export class UserController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.users.remove(id);
-  }
-
-
-  @Post('reset-password')
-  async requestPasswordReset(@Body('email') email: string) {
-    return this.users.requestPasswordReset(email);
-  }
-
-  @Post('reset-password/:token')
-  async resetPassword(@Param('token') token: string, @Body('password') password: string) {
-    return this.users.resetPassword(token, password);
   }
 }
