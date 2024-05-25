@@ -1,5 +1,5 @@
 import { Controller, Get, UnauthorizedException, Headers, Post, Body } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { UserService } from './user/user.service';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { SignInDto } from '../dto/sign-in.dto';

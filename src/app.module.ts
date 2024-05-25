@@ -12,6 +12,7 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { CollaborationMagazineModule } from './collaborationMagazine/collaborationMagazine.module';
 import { ArticleModule } from './article/article.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { ArticleModule } from './article/article.module';
     ArtworkModule,
     AuthModule,
     CollaborationMagazineModule,
-    ArticleModule
+    ArticleModule,
+    StripeModule
   ],
   controllers: [AppController],
   providers: [AppService],

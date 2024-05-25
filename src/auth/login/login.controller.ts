@@ -13,13 +13,12 @@ export class LoginController {
     @Post()
     async login(@Request() req): Promise<SignInDto> {
         const { username, password } = req.body;
-        console.log(username, password);
         const user = await this.userService.validateUser(username, password);
         if (!user) {
             throw new UnauthorizedException('Invalid username or password');
         }
 
-        const payload = { username: user.email, sub: user.id };
+        const payload = { username: user.email, sub: user.id, role: user.role};
         const token = this.jwtService.sign(payload);
 
         return {

@@ -76,4 +76,9 @@ export class MagazineService {
       throw new NotFoundException();
     }
   }
+
+  async getMagazinePriceId(magazineId: number): Promise<string> {
+    const magazine = await this.data.findOneById(magazineId);
+    return magazine.priceId;
+  }
 }

@@ -23,6 +23,9 @@ export class User {
   @Column()
   postalCode: number;
 
+  @Column()
+  subscriptionId: string;
+
   @Index({ unique: true })
   @Column({ length: 150 })
   email: string;
@@ -36,6 +39,9 @@ export class User {
 
   @Column({ type: "enum", enum: Status, default: Status.Verified})
   status: Status;
+
+  @Column({ nullable: true })
+  stripeCustomerId: string;
 
   @Column({ nullable: true })
   passwordResetToken: string;

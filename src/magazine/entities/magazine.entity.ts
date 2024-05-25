@@ -17,6 +17,12 @@ export class Magazine {
     @Column()
     type: string;
 
+    @Column()
+    description: string;
+
+    @Column()
+    priceId: string;
+
     @OneToMany(() => CollaborationMagazine, collaborationMagazine => collaborationMagazine.magazine)
     collaborationsMagazine: CollaborationMagazine[];
 

@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, NotFoundException, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Roles } from 'src/auth/security/roles.decorator';
+import { Roles } from '../auth/security/roles.decorator';
 import { Role } from './enums/role.enum';
-import { RolesGuard } from 'src/auth/security/roles.guard';
+import { RolesGuard } from '../auth/security/roles.guard';
+import { StripeService } from '../stripe/stripe.service';
+import * as bcrypt from 'bcryptjs';
 
 @Controller('user')
 export class UserController {
-  constructor(private users: UserService) { }
+  constructor(private users: UserService, private stripeService: StripeService) { }
 
   @UseGuards(RolesGuard)
   @Roles(Role.Admin, Role.Spectator)
@@ -39,9 +41,23 @@ export class UserController {
   }
 
   @UseGuards(RolesGuard)
+  @Roles(Role.Admin, Role.Staff, Role.Spectator)
+  @Patch(':id/password')
+  async updatePassword(@Param('id') id: string, @Body('password') password: string) {
+    const hashedPassword = await bcrypt.hash(password, 15);
+    return this.users.updatePassword(id, hashedPassword);
+  }
+
+  @UseGuards(RolesGuard)
   @Roles(Role.Admin, Role.Staff)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.users.remove(id);
+  }
+
+  @Get('billing-portal')
+  async getBillingPortalUrl(@Query('customerId') customerId: string, @Query('returnUrl') returnUrl: string): Promise<{ url: string }> {
+    const url = await this.stripeService.getBillingPortalSessionUrl(customerId, returnUrl);
+    return { url };
   }
 }

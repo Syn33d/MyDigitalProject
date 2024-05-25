@@ -15,12 +15,9 @@ export class UserService {
     json.email ||= '';
     json.password ||= '';
 
-    // Hash the password before inserting it into the database
-    const hashedPassword = await bcrypt.hash(json.password, 15);
-
     let result = await this.data.query("INSERT INTO user (email, hash) VALUES (?, ?)", [
       json.email,
-      hashedPassword  // Use the hashed password here
+      json.password  // Use the hashed password here
     ]);
     json.id = result.insertId;
     return json;
@@ -81,24 +78,24 @@ export class UserService {
     json.town ||= find.town;
     json.postalCode ||= find.postalCode;
     json.email ||= find.email;
-    json.password ||= find.password;
-    await this.data.query("UPDATE user SET lastName = ?, firstName = ?, street = ?, town = ?, postalCode = ?, email = ?, hash = ? WHERE idUser = ?", [
+    await this.data.query("UPDATE user SET lastName = ?, firstName = ?, street = ?, town = ?, postalCode = ?, email = ? WHERE idUser = ?", [
       json.lastName,
       json.firstName,
       json.street,
       json.town,
       json.postalCode,
       json.email,
-      json.password,
       json.id
     ]);
     return json;
   }
 
-  async updatePassword(email: string, newPassword: string): Promise<void> {
-    const hashedPassword = await bcrypt.hash(newPassword, 15);
-    const user = await this.data.findOne({ where: { email } });
-    user.hash = hashedPassword;
+  async updatePassword(id: string, newPassword: string): Promise<void> {
+    const user = await this.data.findOneById(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    user.hash = newPassword;
     user.passwordResetToken = null;
     await this.data.save(user);
   }
@@ -107,12 +104,14 @@ export class UserService {
     return this.data.query("DELETE FROM user WHERE idUser = ?", [+id]);
   }
 
-
-
   async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.data.findOne({ where: { email } });
-    if (user && await bcrypt.compare(password, user.hash)) {
-      return user;
+    if (user) {
+      const passwordMatches = await bcrypt.compare(password, user.hash);
+
+      if (passwordMatches) {
+        return user;
+      }
     }
     return null;
   }
