@@ -77,7 +77,7 @@ export class MagazineService {
     }
   }
 
-  async getMagazinePriceId(magazineId: number): Promise<string> {
+  async getMagazinePriceId(magazineId: string): Promise<string> {
     const magazine = await this.data.findOneById(magazineId);
     return magazine.priceId;
   }

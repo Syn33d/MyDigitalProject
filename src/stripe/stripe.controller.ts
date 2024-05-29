@@ -124,9 +124,10 @@ export class StripeController {
   }
 
   @Post('purchase')
-  async createOneTimePurchase(@Body() body: { email: string, paymentMethod: string, idMagazine: number, successUrl: string, cancelUrl: string }) {
+  async createOneTimePurchase(@Body() body: { email: string, paymentMethod: string, idMagazine: string, successUrl: string, cancelUrl: string }) {
 
-    const magazineId = await this.magazineService.getMagazinePriceId(body.idMagazine);
+    //For V1, we will assume that the magazine ID is the price ID
+    //const magazineId = await this.magazineService.getMagazinePriceId(body.idMagazine);
     try {
       let customerId;
 
@@ -139,7 +140,7 @@ export class StripeController {
         customerId = customer.id;
       }
 
-      const session = await this.stripeService.createCheckoutSessionForOneTimePurchase(body.email, magazineId, body.successUrl, body.cancelUrl, body.paymentMethod);
+      const session = await this.stripeService.createCheckoutSessionForOneTimePurchase(body.email, body.idMagazine, body.successUrl, body.cancelUrl, body.paymentMethod);
       return { success: true, session };
     } catch (error) {
       console.error(error);
