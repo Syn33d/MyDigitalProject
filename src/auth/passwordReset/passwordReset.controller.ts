@@ -3,9 +3,11 @@ import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 
+import * as bcrypt from 'bcryptjs';
+
 @Controller('auth/reset-password/confirm')
 export class PasswordResetController {
-  constructor(private userService: UserService, private jwtService: JwtService) {}
+  constructor(private userService: UserService, private jwtService: JwtService) { }
 
   @Post()
   async confirmResetPassword(@Body('token') token: string, @Body('password') password: string, @Body('email') email: string) {
@@ -19,9 +21,10 @@ export class PasswordResetController {
       throw new UnauthorizedException();
     }
 
-    user.hash = password;
+    const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
+    user.hash = hashedPassword;
     user.passwordResetToken = null;
-    await this.userService.updatePassword(user.email, password);
+    await this.userService.updatePassword(user.email, hashedPassword); // Save the hashed password
     return { message: 'Password has been reset' };
   }
 }
