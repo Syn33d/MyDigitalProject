@@ -90,8 +90,8 @@ export class UserService {
     return json;
   }
 
-  async updatePassword(id: string, newPassword: string): Promise<void> {
-    const user = await this.data.findOneById(id);
+  async updatePassword(email: string, newPassword: string): Promise<void> {
+    const user = await this.data.findOne({ where: { email } });
     if (!user) {
       throw new Error('User not found');
     }
