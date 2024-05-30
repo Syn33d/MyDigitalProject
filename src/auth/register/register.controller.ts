@@ -1,9 +1,10 @@
-import { Body, Controller, Post, ConflictException, Request } from '@nestjs/common';
+import { Controller, Post, ConflictException, Request } from '@nestjs/common';
 import { UserService } from '../../user/user.service';
 import { CreateUserDto } from '../../user/dto/create-user.dto';
 import * as bcrypt from 'bcryptjs';
 import { Role } from '../../user/enums/role.enum';
 import { Status } from '../../user/enums/status.enum';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('auth/register')
 export class RegisterController {
