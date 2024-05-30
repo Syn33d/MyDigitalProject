@@ -8,22 +8,22 @@ export class User {
   @PrimaryGeneratedColumn({ name: "idUser" })
   id!: number;
 
-  @Column({ length: 200 })
+  @Column({ length: 200, nullable: true})
   lastName: string;
 
-  @Column({ length: 200 })
+  @Column({ length: 200, nullable: true})
   firstName: string;
 
-  @Column()
+  @Column({ nullable: true })
   street: number;
 
-  @Column()
+  @Column({ nullable: true })
   town: string;
 
-  @Column()
+  @Column({ nullable: true })
   postalCode: number;
 
-  @Column()
+  @Column({ nullable: true })
   subscriptionId: string;
 
   @Index({ unique: true })

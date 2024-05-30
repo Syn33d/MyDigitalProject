@@ -12,14 +12,10 @@ export class UserService {
   constructor(@InjectRepository(User) private data: Repository<User>, private jwtService: JwtService) { }
 
   async create(@Body() json): Promise<any> {
-    json.lastName ||= 'Unknown';
-    json.firstName ||= 'Unknown';
     json.email ||= '';
     json.password ||= '';
 
-    let result = await this.data.query("INSERT INTO user (email, hash, lastName, firstName) VALUES (?, ?, ?, ?)", [
-      json.lastName,
-      json.firstName,
+    let result = await this.data.query("INSERT INTO user (email, hash) VALUES (?, ?)", [
       json.email,
       json.password  // Use the hashed password here
     ]);
