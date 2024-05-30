@@ -18,6 +18,8 @@ export class UserService {
     json.password ||= '';
 
     let result = await this.data.query("INSERT INTO user (email, hash, lastName, firstName) VALUES (?, ?, ?, ?)", [
+      json.lastName,
+      json.firstName,
       json.email,
       json.password  // Use the hashed password here
     ]);
